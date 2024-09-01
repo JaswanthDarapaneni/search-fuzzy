@@ -1,4 +1,8 @@
-# SearchFuzzy JS Integration
+# Overview Search-Fuzzy
+
+Searching for a specific data in a large dataset can be a challenging task. The searchFuzzy utility provides a powerful solution for this problem. This utility allows you to search for a specific data in a large dataset by providing a query string and a set of fields to search in. The utility returns an array of objects that match the query.
+
+## SearchFuzzy JS Integration
 
 ```js
 const { fuzzySearch } = require("search-fuzzy/fuzzy/fuzzy");
@@ -58,10 +62,6 @@ fuzzySearch(data, fields, query, apiConfig, { maxResults: 3 })
 
 # SearchFuzzy Angular Integration
 
-## Overview
-
-Searching for a specific data in a large dataset can be a challenging task. The searchFuzzy utility provides a powerful solution for this problem. This utility allows you to search for a specific data in a large dataset by providing a query string and a set of fields to search in. The utility returns an array of objects that match the query.
-
 This project demonstrates the integration of the powerful `searchFuzzy` utility with Angular applications. It provides a robust mechanism for performing fuzzy searches on datasets, allowing for approximate matches in both local and remote data.
 
 ## Installation
@@ -76,7 +76,7 @@ npm install search-fuzzy
    In your Angular project, import the searchFuzzy function where needed:
 
 ```typescript
-import { fuzzySearch, Query } from "search-fuzzy/dist/fuzzy";
+import { fuzzySearch, Query } from "search-fuzzy/fuzzy/fuzzy";
 ```
 
 - Usage Example
@@ -109,7 +109,7 @@ apiConfig: Object (Optional)
 ```typescript
 import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { fuzzySearch, Query } from "search-fuzzy/dist/fuzzy";
+import { fuzzySearch, Query } from "search-fuzzy/fuzzy/fuzzy";
 
 @Component({
   selector: "app-search",
@@ -150,7 +150,7 @@ To integrate the searchFuzzy utility with your Angular application, follow these
 ```typescript
 import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { ApiConfig, fuzzySearch, Query } from "search-fuzzy/dist/fuzzy";
+import { ApiConfig, fuzzySearch, Query } from "search-fuzzy/fuzzy/fuzzy";
 
 @Component({
   selector: "app-search",
@@ -204,7 +204,7 @@ export class SearchComponent {
 The fuzzySearch function accepts additional options for fine-tuning:
 
 ```typescript
-import { ApiConfig, fuzzySearch, Query } from "search-fuzzy/dist/fuzzy";
+import { ApiConfig, fuzzySearch, Query } from "search-fuzzy/fuzzy/fuzzy";
 
 const options = {
   threshold: 0.6,

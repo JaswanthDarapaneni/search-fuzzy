@@ -9,7 +9,7 @@ const { DESCRIPTION, AUTHOR, HOMEPAGE } = {
 };
 
 const banner = `/**
- * search-fuzzy.js v 1.1.1 - ${DESCRIPTION} (${HOMEPAGE})
+ * search-fuzzy.js v 1.1.2 - ${DESCRIPTION} (${HOMEPAGE})
  *
  * Copyright (c) ${new Date().getFullYear()} ${AUTHOR.name} (${AUTHOR.url})
  * All Rights Reserved. Apache Software License 2.0
