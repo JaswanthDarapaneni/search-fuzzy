@@ -97,12 +97,12 @@ export type Fields<T> = (keyof T)[];
 export interface ApiConfig {
   useApi?: boolean;
   url: string; // The URL for the HTTP request
-  token: string;
+  token?: any;
   credentials?: Credentials;
-  headers?: Record<string, string>; // Optional headers as key-value pairs
+  headers?: Record<string, any>; // Optional headers as key-value pairs
   keepalive?: boolean;
   body?: any; // Optional request body (can be any type; consider using specific types if known)
-  params?: Record<string, string>; // Optional query parameters as key-value pairs
+  params?: Record<string, any>; // Optional query parameters as key-value pairs
 }
 
 /**

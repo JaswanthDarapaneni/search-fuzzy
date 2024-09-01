@@ -1,4 +1,4 @@
-const { fuzzySearch } = require('../../dist/fuzzy.js'); // Adjust the path as needed
+const { fuzzySearch } = require('../../fuzzy/fuzzy'); // Adjust the path as needed
 
 const data = [
   { title: "The Great Gatsby", author: "F. Scott Fitzgerald", publicationYear: 1925, isbn: "978-0743273565" },

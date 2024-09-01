@@ -1,4 +1,4 @@
-/dist
+/fuzzy
 /node_modules
 
 .env
