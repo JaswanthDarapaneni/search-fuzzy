@@ -1,116 +1,137 @@
-# Overview Search-Fuzzy
+# Search-Fuzzy
 
-Searching for a specific data in a large dataset can be a challenging task. The searchFuzzy utility provides a powerful solution for this problem. This utility allows you to search for a specific data in a large dataset by providing a query string and a set of fields to search in. The utility returns an array of objects that match the query.
+## Overview
 
-## SearchFuzzy JS Integration
-
-```js
-const { fuzzySearch } = require("search-fuzzy/fuzzy/fuzzy");
-
-const data = [
-  {
-    name: "John",
-    age: 20,
-  },
-  {
-    name: "Jane",
-    age: 21,
-  },
-];
-
-fuzzySearch(data, ["name", "age"], { query: "jane" }).then((res) => {
-  console.log(res)[
-    // output:
-    ({ name: "Jane", age: 21 }, { name: "John", age: 20 })
-  ];
-});
-```
-
-## JS API integration
-
-```js
-const { fuzzySearch } = require("search-fuzzy/fuzzy/fuzzy");
-
-const fields = [];
-// Content from free api
-const query = { query: "consequatur qui cupiditate rerum quia soluta" };
-
-const apiConfig = {
-  url: "https://jsonplaceholder.typicode.com/posts",
-  useApi: true,
-  headers: {
-    Authorization: "Bearer your-token",
-    Accept: "application/json",
-    "Custom-Header": "custom-value", // Additional custom headers
-  },
-  //  This will set param to the url like
-  //  https://jsonplaceholder.typicode.com/posts?id=1
-  params: {
-    id: 1,
-  },
-  // We can use without param as well
-};
-
-fuzzySearch(data, fields, query, apiConfig, { maxResults: 3 })
-  .then((results) => {
-    console.log(results);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-```
-
-# SearchFuzzy Angular Integration
-
-This project demonstrates the integration of the powerful `searchFuzzy` utility with Angular applications. It provides a robust mechanism for performing fuzzy searches on datasets, allowing for approximate matches in both local and remote data.
+Search-Fuzzy is a powerful utility for searching specific data in large datasets. It provides a fuzzy search functionality that allows you to search for data by providing a query string and a set of fields to search in. The utility returns an array of objects that match the query, making it ideal for implementing search features in various applications.
 
 ## Installation
 
-### 1. Install the search-fuzzy package
+To install Search-Fuzzy, use npm:
 
 ```bash
 npm install search-fuzzy
 ```
 
-2. Add to your Angular project
-   In your Angular project, import the searchFuzzy function where needed:
+## React Integration
 
-```typescript
-import { fuzzySearch, Query } from "search-fuzzy/fuzzy/fuzzy";
+Here's an example of how to integrate Search-Fuzzy into a React application:
+
+```jsx
+import React, { useState, useEffect } from "react";
+import { fuzzySearch } from "search-fuzzy/fuzzy/fuzzy";
+
+const TestSearch = () => {
+  const [query, setQuery] = useState({ query: "" });
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const fields = [];
+  const apiConfig = {
+    url: "https://jsonplaceholder.typicode.com/posts",
+    useApi: true,
+    headers: {
+      Authorization: "Bearer your-token",
+      Accept: "application/json",
+      "Custom-Header": "custom-value",
+    },
+  };
+
+  useEffect(() => {
+    const debounceTimer = setTimeout(() => {
+      if (query.query.trim() !== "") {
+        setLoading(true);
+        const fetchResults = async () => {
+          try {
+            const response = await fuzzySearch([], fields, query, apiConfig, { maxResults: 10 });
+            setResults(response);
+            setLoading(false);
+          } catch (error) {
+            console.error(error);
+            setLoading(false);
+          }
+        };
+        fetchResults();
+      } else {
+        setResults([]);
+      }
+    }, 500); // 500ms debounce delay
+
+    return () => {
+      clearTimeout(debounceTimer);
+    };
+  }, [query]);
+
+  return (
+    <div>
+      <h1>Search Results</h1>
+      <input
+        type="text"
+        value={query.query}
+        onChange={(e) => setQuery({ query: e.target.value })}
+        placeholder="Search..."
+      />
+      {loading && <p>Loading...</p>}
+      {results.length > 0 ? (
+        <table border="1" cellPadding="10" style={{ width: "100%", marginTop: "20px" }}>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Body</th>
+            </tr>
+          </thead>
+          <tbody>
+            {results.map((result, index) => (
+              <tr key={index}>
+                <td>{result.id}</td>
+                <td>{result.title}</td>
+                <td>{result.body}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        query.query.trim() !== "" && <p>No results found.</p>
+      )}
+    </div>
+  );
+};
+
+export default TestSearch;
 ```
 
-- Usage Example
+## JavaScript Integration
 
-```typescript
-fuzzySearch(data, fields, query, apiConfig)
-  .then((res) => {
-    console.log(res);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+Here's how to use Search-Fuzzy in a JavaScript environment:
+
+```javascript
+const { fuzzySearch } = require("search-fuzzy/fuzzy/fuzzy");
+
+const data = [
+  { name: "John", age: 20 },
+  { name: "Jane", age: 21 },
+];
+
+fuzzySearch(data, ["name", "age"], { query: "jane" }).then((res) => {
+  console.log(res);
+  // Output: [{ name: "Jane", age: 21 }, { name: "John", age: 20 }]
+});
 ```
 
-### Parameters:
+## Angular Integration
 
-data: Array<Object>
-An array of objects to search through.
+To integrate Search-Fuzzy with an Angular application, follow these steps:
 
-fields: Array<string>
-An array of string field names to search within each object.
-
-query: string
-The search query string.
-
-apiConfig: Object (Optional)
-
-### Configuration for searching in angular
+1. Import the necessary modules:
 
 ```typescript
 import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { fuzzySearch, Query } from "search-fuzzy/fuzzy/fuzzy";
+```
 
+2. Create a component that uses the Search-Fuzzy utility:
+
+```typescript
 @Component({
   selector: "app-search",
   standalone: true,
@@ -138,93 +159,64 @@ export class SearchComponent {
   onSearch() {
     fuzzySearch(this.data, ["name", "email"], this.searchQuery).then((res) => {
       this.searchResults = res;
-      // console.log(res);
     });
   }
 }
 ```
 
-### API Integration
-To integrate the searchFuzzy utility with your Angular application, follow these steps:
+## API Configuration
+
+For API integration, you can use the following configuration:
 
 ```typescript
-import { Component } from "@angular/core";
-import { FormsModule } from "@angular/forms";
-import { ApiConfig, fuzzySearch, Query } from "search-fuzzy/fuzzy/fuzzy";
+const apiConfig = {
+  url: "https://jsonplaceholder.typicode.com/posts",
+  useApi: true,
+  headers: {
+    Authorization: "Bearer your-token",
+    Accept: "application/json",
+    "Custom-Header": "custom-value",
+  },
+  params: {
+    id: 1,
+  },
+};
 
-@Component({
-  selector: "app-search",
-  standalone: true,
-  imports: [FormsModule],
-  template: `
-    <section class="container mt-20 grid justify-center">
-      <input [(ngModel)]="searchQuery.query" (input)="onSearch()" />
-      <ul>
-        @for (result of searchResults; track $index) {
-        <li>{{ result.name }}</li>
-        }
-      </ul>
-    </section>
-  `,
-})
-export class SearchComponent {
-  searchQuery: Query = { query: "" };
-  searchResults: any[] = [];
-  private apiConfig: ApiConfig = {
-    url: "https://jsonplaceholder.typicode.com/posts",
-    useApi: true,
-    // Optinal credentials for the request
-    token: "your-token",
-    headers: {
-      Authorization: "Bearer your-token",
-      Accept: "application/json",
-      "Custom-Header": "custom-value", // Additional custom headers
-    },
-    params: {
-      // Optinal params for the request
-      id: "1",
-    },
-  };
-
-  onSearch() {
-    fuzzySearch([], ["name", "title"], this.searchQuery, this.apiConfig)
-      .then((res) => {
-        this.searchResults = res;
-        // console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-}
+fuzzySearch([], fields, query, apiConfig, { maxResults: 3 })
+  .then((results) => {
+    console.log(results);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
 ```
 
-### Advanced Configuration
+## Advanced Configuration
 
 The fuzzySearch function accepts additional options for fine-tuning:
 
 ```typescript
-import { ApiConfig, fuzzySearch, Query } from "search-fuzzy/fuzzy/fuzzy";
-
 const options = {
   threshold: 0.6,
   limit: 10,
 };
 
-fuzzySearch([], ["name", "email"], this.searchQuery, options)
+fuzzySearch([], ["name", "email"], searchQuery, options)
   .then((res) => {
     console.log(res);
   })
   .catch((err) => {
     console.log(err);
   });
-
 ```
 
-### Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-### License
+## License
 
 This project is licensed under the MIT License.
+```
+
+This README provides a comprehensive guide to using the Search-Fuzzy utility in various environments, including React, plain JavaScript, and Angular. It covers installation, basic usage, API configuration, and advanced options.
